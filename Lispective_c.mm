@@ -43,7 +43,7 @@ void Repl( NSString *prompt )
 int main (int argc, const char * argv[]) {
     NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 
-#if 0
+#if 1
 //	NSString *program = @"(begin (define r 3) (* 3.141592653 (* r r)))";
 //	NSString *program = @"(begin (define square (lambda (r) (* r r))) (square 3))";
 	NSString *program = @"(begin (define fact (lambda (n) (if (zerop n) 1 (* n (fact (- n 1)))))) (fact 5))";

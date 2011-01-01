@@ -15,17 +15,17 @@
 #define NSLOG( ... ) 
 #endif
 
-BOOL Symbolp( id atom )
+BOOL IsSymbol( id atom )
 {
 	return [atom isKindOfClass:[NSString class]];
 }
 
-BOOL Listp( id atom )
+BOOL IsList( id atom )
 {
 	return [atom isKindOfClass:[NSArray class]];
 }
 
-BOOL Boolp( id atom )
+BOOL BoolEval( id atom )
 {
 	if ( [atom isKindOfClass:[NSNumber class]] )
 		return [atom boolValue];
@@ -35,14 +35,14 @@ BOOL Boolp( id atom )
 id Eval( id x, Env *env )
 {
 	NSLOG(@"eval %@",x);
-	if ( Symbolp(x) )
+	if ( IsSymbol(x) )
 	{
 		id atom = [[env find:x] atomForSymbol:x];
 		NSLOG(@"symbolp %@",atom);
 		return atom;
 	}
 	
-	if ( !Listp(x) )
+	if ( !IsList(x) )
 	{
 		NSLOG(@"!listp %@",[x class]);
 		return x;
@@ -63,7 +63,7 @@ id Eval( id x, Env *env )
 		id test = [x objectAtIndex:1];
 		id conseq = [x objectAtIndex:2];
 		id alt = [x objectAtIndex:3];
-		return Eval( Boolp(Eval(test,env)) ? conseq : alt, env );
+		return Eval( BoolEval( Eval(test,env) ) ? conseq : alt, env );
 	}
 	
 	if ( [first isEqual:@"set!"] )
